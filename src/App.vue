@@ -1,5 +1,5 @@
 <template>
-  <h1>Mathificent</h1>
+  <h1>Mathificent!</h1>
 </template>
 
 <script>
