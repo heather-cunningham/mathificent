@@ -1,8 +1,6 @@
 <template>
   <HeaderNavBar />
-
-  <h1>Mathificent!</h1>
-
+  <MainContainer />
   <FooterBar />
 </template>
 
@@ -10,10 +8,12 @@
 import {defineComponent} from 'vue';
 import HeaderNavBar from "@/components/HeaderNavBar.vue";
 import FooterBar from "@/components/FooterBar.vue";
+import MainContainer from "@/components/MainContainer.vue";
 
 export default defineComponent({
   name: 'App',
   components: {
+    MainContainer,
     FooterBar,
     HeaderNavBar,
   }
