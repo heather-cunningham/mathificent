@@ -21,7 +21,5 @@ export default {
 
 
 <style>
-header, footer {
-  background: steelblue;
-}
+
 </style>
