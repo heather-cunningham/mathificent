@@ -30,7 +30,7 @@
       </div>
 
       <div id="game-equation" class="row my-2">
-        <GameEquation />
+        <GameEquation :user-answer="answerInput" />
       </div>
 
       <div id="calculator-buttons">
@@ -40,8 +40,9 @@
                       :id="`${number}-btn`"
                       :label="`${number}`"
                       :value="`${number}`"
-                      :key="number" />
-        <ClearButton />
+                      :key="number"
+                      @click="setAnswerInput(number)" />
+        <ClearButton @click="clickClearBtn" />
 
         <!-- Do above ^ instead of these divs.  Don't need the extra divs w/ cols either b/c
          the NumberButton's style and the main container constrain them.  -->
@@ -113,6 +114,7 @@ export default defineComponent({
       maxNumber: selectDefaultMsg,
       screen: "play",
       numberButtonList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+      answerInput: "",
     };
   }, // end data
 
@@ -143,6 +145,15 @@ export default defineComponent({
 
     loadGameScreen() {
       this.screen = "play";
+    },
+
+    setAnswerInput(numberSelected) {
+      this.answerInput += String(numberSelected);
+      this.answerInput = String(Number(this.answerInput));
+    },
+
+    clickClearBtn() {
+      this.answerInput = "";
     },
   },//end methods
 

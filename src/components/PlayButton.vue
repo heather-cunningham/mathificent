@@ -4,7 +4,8 @@
             class="btn btn-primary form-control"
             type="button"
             value="Play"
-            aria-label="Play button" @click="clickPlayBtn">
+            aria-label="Play button"
+            @click="clickPlayBtn">
       Play
     </button>
   </div>
@@ -15,7 +16,7 @@ import {defineComponent} from 'vue';
 
 export default defineComponent({
   name: "PlayButton",
-  emits: ['click'],
+  emits: ["click"],
 
   methods: {
     clickPlayBtn() {

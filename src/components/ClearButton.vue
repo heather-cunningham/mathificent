@@ -1,5 +1,9 @@
 <template>
-  <button id="clear-btn" class="btn btn-primary" type="button" value="clear" aria-label="Clear">
+  <button id="clear-btn"
+          class="btn btn-primary"
+          type="button"
+          value="clear"
+          aria-label="Clear">
     Clear
   </button>
 </template>
@@ -8,7 +12,7 @@
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-  name: "ClearButton"
+  name: "ClearButton",
 })
 </script>
 

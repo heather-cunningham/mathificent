@@ -2,7 +2,7 @@
   <div id="equation" class="row">
     <div class="col-5">1+1</div>
     <div class="col-2">=</div>
-    <div class="col-5">2</div>
+    <div id="user-answer" class="col-5">{{ userAnswer }}</div>
   </div>
 </template>
 
@@ -10,7 +10,10 @@
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-  name: "GameEquation"
+  name: "GameEquation",
+  props: {
+    userAnswer: String,
+  }
 })
 </script>
 
