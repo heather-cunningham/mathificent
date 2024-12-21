@@ -1,8 +1,8 @@
 <template>
   <label :id="labelId" :for="id" >{{ label }}</label>
-  <select :id="id" >
-    <option value="0" disabled selected>Please, select one</option>
-<!--    :key="`${option}-${yourVariable}`"-->
+  <!-- This `@input="emitInput"` is an event Emitter, for which the parent comp listens. -->
+  <select :id="id" class="form-select" :value="modelValue" @input="emitInput">
+    <option :value="modelValue" disabled selected>{{ modelValue }}</option>
     <option v-for="option in options" :key="`${id}-${option[1]}`" :value="option[1]">
       {{ option[0] }}
     </option>
@@ -14,13 +14,28 @@ import {defineComponent} from 'vue';
 
 export default defineComponent({
   name: "SelectInput",
+  emits: [
+    "update:modelValue", // This is new Vue3 way of handling the v-model directive from the Parent Comp.
+    // This child comp is now a "controlled comp", being controlled by the Parent Comp.
+    // The v-model directive implicitly creates a modelValue prop and an update:modelValue event,
+    // which your child component should handle.
+    "input",
+  ],
 
   props: {
     id: String,
     labelId: String,
     label: String,
     options: Array,
+    modelValue: String,  // fka as `currentValue`
   }, // end props
+
+  methods: {
+    emitInput(event) {
+      this.$emit("update:modelValue", event.target.value); // This is new Vue3 way of handling the v-model directive from the Parent Comp.
+      this.$emit("input", event.target.value);
+    },
+  },//end methods
 
 });// end export
 </script>

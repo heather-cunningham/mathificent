@@ -1,15 +1,21 @@
 <template>
   <main id="main-container">
     <h1>Mathificent!</h1>
-    <div>
-      <SelectInput id="operation" label="Operation" label-id="operation-lbl" :options="operationList" />
-    </div>
-    <div>
-      <SelectInput id="max-number" label="Maximum Number" label-id="max-number-lbl" :options="numberList" />
-    </div>
-    <div>
-      <PlayButton/>
-    </div>
+    <SelectInput id="operation"
+                 label="Operation"
+                 label-id="operation-lbl"
+                 :options="operationList"
+                 v-model="operation"
+                 @input="setOperation" />
+    <SelectInput id="max-number"
+                 label="Maximum Number"
+                 label-id="max-number-lbl"
+                 :options="numberList"
+                 v-model="maxNumber"
+                 @input="setMaxNum" />
+    <!-- This `@input="setMaxNum"` is an Event Listener, which listens for the value emitted by child
+     comp, SelectInput. -->
+    <PlayButton/>
   </main>
 </template>
 
@@ -39,6 +45,8 @@ export default defineComponent({
         ['Multiplication', 'x'],
         ['Division', '/']
       ],
+      operation: "Please, select one",
+      maxNumber: "Please, select one",
     };
   }, // end data
 
@@ -51,6 +59,17 @@ export default defineComponent({
       return numberList;
     }
   },// end computed
+
+  methods: {
+    // Value here is the $event.target.value implicit variable, and it can't be named anything else.
+    setOperation(value) {
+      this.operation = value;
+    },
+
+    setMaxNum(value) {
+      this.maxNumber = value;
+    },
+  },//end methods
 
 });// end export
 </script>
