@@ -1,21 +1,28 @@
 <template>
   <main id="main-container">
-    <h1>Mathificent!</h1>
-    <SelectInput id="operation"
-                 label="Operation"
-                 label-id="operation-lbl"
-                 :options="operationList"
-                 v-model="operation"
-                 @input="setOperation" />
-    <SelectInput id="max-number"
-                 label="Maximum Number"
-                 label-id="max-number-lbl"
-                 :options="numberList"
-                 v-model="maxNumber"
-                 @input="setMaxNum" />
-    <!-- This `@input="setMaxNum"` is an Event Listener, which listens for the value emitted by child
-     comp, SelectInput. -->
-    <PlayButton/>
+    <div id="config-container" v-if="screen === 'config'">
+      <h1>Mathificent!</h1>
+      <SelectInput id="operation"
+                   label="Operation"
+                   label-id="operation-lbl"
+                   :options="operationList"
+                   v-model="operation"
+                   @input="setOperation"/>
+      <SelectInput id="max-number"
+                   label="Maximum Number"
+                   label-id="max-number-lbl"
+                   :options="numberList"
+                   v-model="maxNumber"
+                   @input="setMaxNum"/>
+      <!-- This `@input="setMaxNum"` is an Event Listener, which listens for the value emitted by child
+       comp, SelectInput. -->
+      <PlayButton @click="loadGameScreen" />
+    </div>
+    <div id="game-container" class="text-center" v-else-if="screen === 'play'">
+      <button id="change-game-btn" type="button" class="btn  btn-success" @click="loadConfigScreen">
+        Change Game
+      </button>
+    </div>
   </main>
 </template>
 
@@ -24,6 +31,8 @@
 import {defineComponent} from 'vue';
 import SelectInput from "@/components/SelectInput.vue";
 import PlayButton from "@/components/PlayButton.vue";
+
+const selectDefaultMsg = "Please, select one";
 
 // All properties, including the `props` property, here in the OptionsAPI
 // are assigned to objs w/ further properties inside most.
@@ -37,7 +46,8 @@ export default defineComponent({
   }, // end components
 
   data: () => {
-    // The data property always returns an obj
+    // The data property always returns an obj filled with reactive variables.
+    // Basically, all your let's go here.
     return {
       operationList: [
         ['Addition', '+'],
@@ -45,8 +55,9 @@ export default defineComponent({
         ['Multiplication', 'x'],
         ['Division', '/']
       ],
-      operation: "Please, select one",
-      maxNumber: "Please, select one",
+      operation: selectDefaultMsg,
+      maxNumber: selectDefaultMsg,
+      screen: "config"
     };
   }, // end data
 
@@ -60,6 +71,7 @@ export default defineComponent({
     }
   },// end computed
 
+  // Methods also is always assigned to an obj, and then fcns are placed inside that obj
   methods: {
     // Value here is the $event.target.value implicit variable, and it can't be named anything else.
     setOperation(value) {
@@ -68,6 +80,14 @@ export default defineComponent({
 
     setMaxNum(value) {
       this.maxNumber = value;
+    },
+
+    loadConfigScreen() {
+      this.screen = "config";
+    },
+
+    loadGameScreen() {
+      this.screen = "play";
     },
   },//end methods
 
