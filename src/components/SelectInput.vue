@@ -1,12 +1,15 @@
 <template>
-  <label :id="labelId" :for="id" >{{ label }}</label>
-  <!-- This `@input="emitInput"` is an event Emitter, for which the parent comp listens. -->
-  <select :id="id" class="form-select" :value="modelValue" @input="emitInput">
-    <option :value="modelValue" disabled selected>{{ modelValue }}</option>
-    <option v-for="option in options" :key="`${id}-${option[1]}`" :value="option[1]">
-      {{ option[0] }}
-    </option>
-  </select>
+  <div class="row mx-1 my-3">
+    <label :id="labelId" :for="id" class="fw-bold">{{ label }}</label>
+
+    <!-- This `@input="emitInput"` is an event Emitter, for which the parent comp listens. -->
+    <select :id="id" class="col form-select" :value="modelValue" @input="emitInput">
+      <option :value="modelValue" disabled selected>{{ modelValue }}</option>
+      <option v-for="option in options" :key="`${id}-${option[1]}`" :value="option[1]">
+        {{ option[0] }}
+      </option>
+    </select>
+  </div>
 </template>
 
 <script>

@@ -18,6 +18,7 @@
        comp, SelectInput. -->
       <PlayButton @click="loadGameScreen" />
     </div>
+
     <div id="game-container" class="text-center" v-else-if="screen === 'play'">
       <button id="change-game-btn" type="button" class="btn  btn-success" @click="loadConfigScreen">
         Change Game
