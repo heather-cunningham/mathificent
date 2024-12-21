@@ -1,0 +1,12 @@
+html {
+  font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 18px;
+}
+
+body {
+  font-size: 18px;
+}
+
+* {
+  box-sizing: border-box;
+}
