@@ -1,12 +1,15 @@
 <template>
-  <div>Score: 0</div>
+  <div>Score: <span id="user-score">{{ userScore }}</span></div>
 </template>
 
 <script>
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-  name: "GameScore"
+  name: "GameScore",
+  props: {
+    userScore: Number,
+  },
 })
 </script>
 

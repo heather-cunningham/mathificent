@@ -22,7 +22,7 @@
     <div id="game-container" class="text-center" v-else-if="screen === 'play'">
       <div id="scoreboard" class=" row border-bottom">
         <div id="score" class="col px-3 text-left">
-          <GameScore />
+          <GameScore :user-score="userScore" />
         </div>
         <div id="timer" class="col px-3 text-right">
           <GameTimer />
@@ -30,7 +30,10 @@
       </div>
 
       <div id="game-equation" class="row my-2">
-        <GameEquation :user-answer="answerInput" />
+        <GameEquation :class="equationClass"
+            :question="question"
+            :user-answer="answerInput"
+            :is-answer-correct="isAnswerCorrect" />
       </div>
 
       <div id="calculator-buttons">
@@ -80,6 +83,7 @@ import GameTimer from "@/components/GameTimer.vue";
 import GameEquation from "@/components/GameEquation.vue";
 import NumberButton from "@/components/NumberButton.vue";
 import ClearButton from "@/components/ClearButton.vue";
+import {getRandomInteger} from "@/helpers/helpers.js";
 
 
 const selectDefaultMsg = "Please, select one";
@@ -112,24 +116,40 @@ export default defineComponent({
       ],
       operation: selectDefaultMsg,
       maxNumber: selectDefaultMsg,
-      screen: "play",
+      screen: "config",
       numberButtonList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
       answerInput: "",
+      operands: {
+        num1: "1",
+        num2: "1",
+      },
+      isAnswerCorrect: false, // aka: named `answered` in course = bad variable name, confusing
+      userScore: 0,
     };
   }, // end data
 
   computed: {
-    numberList: () => {
+    numberList(){
+      return this.setNumberList();
+    },
+    question() {
+      return this.setNewQuestion();
+    },
+    equationClass(){
+      return this.setEquationClassStyle();
+    },
+  },// end computed
+
+  // Methods also is always assigned to an obj, and then fcns are placed inside that obj
+  methods: {
+    setNumberList() {
       const numberList = [];
       for (let number = 2; number <= 100; number++) {
         numberList.push([number, number]);
       }
       return numberList;
-    }
-  },// end computed
+    },
 
-  // Methods also is always assigned to an obj, and then fcns are placed inside that obj
-  methods: {
     // Value here is the $event.target.value implicit variable, and it can't be named anything else.
     setOperation(value) {
       this.operation = value;
@@ -145,10 +165,86 @@ export default defineComponent({
 
     loadGameScreen() {
       this.screen = "play";
+      this.resetQuestion();
     },
 
     setAnswerInput(numberSelected) {
       this.answerInput = String(Number(this.answerInput + String(numberSelected)));
+      this.isAnswerCorrect = this.checkAnswer(this.answerInput, this.operation, this.operands);
+
+      if(this.isAnswerCorrect){
+        setTimeout(()=>this.resetQuestion(),300);
+        this.userScore++;
+      }
+    },
+
+    getRandomNumbers(operator, low, high) {
+      let num1 = getRandomInteger(low, high);
+      let num2 = getRandomInteger(low, high);
+      const numHigh = Math.max(num1, num2);
+      const numLow = Math.min(num1, num2);
+
+      // Make sure higher num comes first if op is Subtraction
+      if(operator === '-') {
+        num1 = numHigh;
+        num2 = numLow;
+      }
+
+      // No division by zero if op is Division
+      if(operator === '/') {
+        if (num2 === 0) {
+          num2 = getRandomInteger(1, high);
+        }
+        num1 = (num1 * num2);
+      }
+      return {num1, num2};
+    },
+
+    setNewQuestion() {
+      const num1 = this.operands.num1;
+      const num2 = this.operands.num2;
+      return `${num1} ${this.operation} ${num2}`;
+    },
+
+    setEquationClassStyle() {
+      if(this.isAnswerCorrect) {
+        return "row fade";
+      } else {
+        return "row";
+      }
+    },
+
+    resetQuestion(){
+      this.answerInput = "";
+      this.isAnswerCorrect = false;
+      this.operands = this.getRandomNumbers(this.operation, 0, this.maxNumber);
+    },
+
+    checkAnswer(userAnswer, operation, operands){
+      if(isNaN(userAnswer))
+        return false;
+
+      const num1 = operands.num1;
+      const num2 = operands.num2;
+      let correctAnswer = 0;
+      switch(operation){
+        case "+":
+          correctAnswer = num1 + num2;
+          break;
+        case "-":
+          correctAnswer = num1 - num2;
+          break;
+        case "x":
+          correctAnswer = num1 * num2;
+          break;
+        case "/":
+          correctAnswer = num1 / num2;
+          break;
+        default:
+          console.log("Invalid user answer entered.");
+          return false;
+      }
+      return (parseInt(userAnswer) === correctAnswer);
     },
 
     clickClearBtn() {
