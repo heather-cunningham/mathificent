@@ -148,8 +148,7 @@ export default defineComponent({
     },
 
     setAnswerInput(numberSelected) {
-      this.answerInput += String(numberSelected);
-      this.answerInput = String(Number(this.answerInput));
+      this.answerInput = String(Number(this.answerInput + String(numberSelected)));
     },
 
     clickClearBtn() {
