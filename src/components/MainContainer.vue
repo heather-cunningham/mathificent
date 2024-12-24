@@ -139,9 +139,10 @@ export default defineComponent({
       },
       isAnswerCorrect: false, // aka: named `answered` in course = bad variable name, confusing
       userScore: 0,
-      gameLength: 3,
-      timeLeft: 3,
-      timerIntervalId: null,
+      gameLength: 60,
+      timeLeft: 0,
+      timerIntervalId: null, // aka timer in class files, again confusing. This var is not the timer itself,
+      // but the interval id returned by setInterval().
     };
   }, // end data
 
