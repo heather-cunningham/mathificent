@@ -1,3 +1,4 @@
+<!--suppress CssUnusedSymbol -->
 <template>
   <main id="main-container">
     <div id="config-container" v-if="screen === 'config'">
@@ -20,68 +21,75 @@
     </div>
 
     <div id="game-container" class="text-center" v-else-if="screen === 'play'">
-      <!-- Time’s Up Game Play template-->
-      <template v-if="timeLeft === 0">
-        <div id="endgame-container">
-          <h2 id="times-up-header">Time’s Up!</h2>
 
-          <div id="endgame-msg-div">
-            <strong class="big">You answered:</strong>
-            <div id="end-score" class="huge">{{ userScore }}</div>
-            <strong class="big">questions correctly!</strong>
+      <transition name="slide">
+        <!-- Time’s Up Game Play template-->
+        <template v-if="timeLeft === 0">
+          <div id="endgame-container">
+            <h2 id="times-up-header">Time’s Up!</h2>
+
+            <div id="endgame-msg-div">
+              <strong class="big">You answered:</strong>
+              <div id="end-score" class="huge">{{ userScore }}</div>
+              <strong class="big">questions correctly!</strong>
+            </div>
+
+            <div id="button-div">
+              <button id="play-again-btn"
+                      class="btn btn-primary form-control"
+                      type="button"
+                      value="Play Again"
+                      aria-label="Play Again"
+                      @click="restartGame">
+                Play Again with the same settings?
+              </button>
+              <button id="change-settings-btn"
+                      class="btn btn-secondary form-control"
+                      type="button"
+                      value="Change Settings"
+                      aria-label="Change Settings"
+                      @click="loadConfigScreen">
+                Change Settings
+              </button>
+            </div>
           </div>
+        </template><!-- end Time's Up template -->
+      </transition>
 
-          <div id="button-div">
-            <button id="play-again-btn"
-                    class="btn btn-primary form-control"
-                    type="button"
-                    value="Play Again"
-                    aria-label="Play Again"
-                    @click="restartGame">
-              Play Again with the same settings?
-            </button>
-            <button id="change-settings-btn"
-                    class="btn btn-secondary form-control"
-                    type="button"
-                    value="Change Settings"
-                    aria-label="Change Settings"
-                    @click="loadConfigScreen">
-              Change Settings
-            </button>
+      <transition name="slide-right">
+        <!-- Game Template -->
+        <template v-if="timeLeft > 0">
+          <div id="gameboard-container">
+            <div id="scoreboard" class=" row border-bottom">
+              <div id="score" class="col px-3 text-left">
+                <GameScore :user-score="userScore"/>
+              </div>
+              <div id="timer" class="col px-3 text-right">
+                <GameTimer :time-left="timeLeft"/>
+              </div>
+            </div>
+
+            <div id="game-equation" class="row my-2">
+              <GameEquation :class="equationClass"
+                            :question="question"
+                            :user-answer="answerInput"
+                            :is-answer-correct="isAnswerCorrect"/>
+            </div>
+
+            <div id="calculator-buttons">
+              <!-- Use `v-for` directive to loop through list of numbers to create the number
+               buttons, instead of hardcoding ea. one. -->
+              <NumberButton v-for="number in numberButtonList"
+                            :id="`${number}-btn`"
+                            :label="`${number}`"
+                            :value="`${number}`"
+                            :key="number"
+                            @click="setAnswerInput(number)"/>
+              <ClearButton @click="clickClearBtn"/>
+            </div>
           </div>
-        </div>
-      </template><!-- end Time's Up template -->
-
-      <!-- Game Template -->
-      <template v-else>
-        <div id="scoreboard" class=" row border-bottom">
-          <div id="score" class="col px-3 text-left">
-            <GameScore :user-score="userScore" />
-          </div>
-          <div id="timer" class="col px-3 text-right">
-            <GameTimer :time-left="timeLeft"/>
-          </div>
-        </div>
-
-        <div id="game-equation" class="row my-2">
-          <GameEquation :class="equationClass"
-              :question="question"
-              :user-answer="answerInput"
-              :is-answer-correct="isAnswerCorrect" />
-        </div>
-
-        <div id="calculator-buttons">
-          <!-- Use `v-for` directive to loop through list of numbers to create the number
-           buttons, instead of hardcoding ea. one. -->
-          <NumberButton v-for="number in numberButtonList"
-                        :id="`${number}-btn`"
-                        :label="`${number}`"
-                        :value="`${number}`"
-                        :key="number"
-                        @click="setAnswerInput(number)" />
-          <ClearButton @click="clickClearBtn" />
-        </div>
         </template><!-- end Game Template -->
+      </transition>
     </div> <!-- end "game-container" -->
 
   </main>
@@ -316,6 +324,42 @@ export default defineComponent({
 #scoreboard {
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+.slide-leave-active,
+.slide-enter-active {
+  width: 21rem;
+  position: absolute;
+  top: 3.11rem;
+  transition: 500ms;
+}
+
+.slide-enter-from {
+  transform: translate(-100%, 0);
+  transition: opacity .5s;
+}
+
+.slide-leave-to {
+  transform: translate(100%, 0);
+  opacity:0;
+}
+
+.slide-right-leave-active,
+.slide-right-enter-active {
+  width: 21rem;
+  position: absolute;
+  top: 3.11rem;
+  transition: 500ms;
+}
+
+.slide-right-enter-from {
+  transform: translate(100%, 0);
+  transition: opacity .5s;
+}
+
+.slide-right-leave-to {
+  transform: translate(-100%, 0);
+  opacity:0;
 }
 
 #endgame-container {
