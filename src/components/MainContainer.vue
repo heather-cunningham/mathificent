@@ -85,8 +85,17 @@
                             :value="`${number}`"
                             :key="number"
                             @click="setAnswerInput(number)"/>
-              <ClearButton @click="clickClearBtn"/>
+              <ClearButton @click="clear"/>
             </div>
+
+            <button id="quit-btn"
+                    class="btn btn-danger form-control"
+                    type="button"
+                    value="quit"
+                    aria-label="Quit"
+                    @click="loadConfigScreen">
+              Quit
+            </button>
           </div>
         </template><!-- end Game Template -->
       </transition>
@@ -254,19 +263,22 @@ export default defineComponent({
     },
 
     startTimer(){
+      window.addEventListener("keyup", this.handleKeyUp);
       this.timeLeft = this.gameLength;
 
       if(this.timeLeft > 0){
         this.timerIntervalId = setInterval(
             ()=>{
               this.timeLeft--;
-              if(this.timeLeft === 0)
+              if(this.timeLeft === 0) {
                 clearInterval(this.timerIntervalId);
+                window.removeEventListener("keyup", this.handleKeyUp);
+              }
             },
             1000
-        );
+        ); // end setInterval()
       }
-    },
+    }, //end  startTimer()
 
     checkAnswer(userAnswer, operation, operands){
       if(isNaN(userAnswer))
@@ -295,7 +307,7 @@ export default defineComponent({
       return (parseInt(userAnswer) === correctAnswer);
     },
 
-    clickClearBtn() {
+    clear() {
       this.answerInput = "";
     },
 
@@ -304,6 +316,18 @@ export default defineComponent({
       this.userScore = 0;
       this.startTimer();
       this.resetQuestion();
+    },
+
+    handleKeyUp(event) {
+      event.preventDefault();
+
+      if(event.key === " " || event.key === "Enter"){
+        this.clear();
+      } else if(event.key === "Backspace") {
+        this.answerInput = this.answerInput.substring(0, this.answerInput.length - 1);
+      } else if(!isNaN(event.key)) {
+        this.setAnswerInput(event.key);
+      }
     },
   },//end methods
 
@@ -324,6 +348,11 @@ export default defineComponent({
 #scoreboard {
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+#quit-btn {
+  width: 19rem;
+  margin: 1.33rem auto;
 }
 
 .slide-leave-active,
