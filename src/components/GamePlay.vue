@@ -136,6 +136,7 @@ export default defineComponent({
 
   methods: {
     mounted() {
+      console.log("#### mounted() called!!!");
       this.resetQuestion();
       this.startTimer();
     },
@@ -178,8 +179,14 @@ export default defineComponent({
     },
 
     setAnswerInput(numberSelected) {
+      console.log("#### setAnswerInput(numberSelected) called!!!");
+      console.log("#### operation IS: " + this.operation);
+      console.log("#### operands ARE: " + this.operands.num1 + ", " + this.operands.num2);
+
       this.answerInput = String(Number(this.answerInput + String(numberSelected)));
-      this.isAnswerCorrect = this.checkAnswer(this.answerInput,  this.operation, this.operands);
+      this.isAnswerCorrect = this.checkAnswer(this.answerInput, this.operation, this.operands);
+
+      console.log("#### this.isAnswerCorrect = " + this.isAnswerCorrect);
 
       if(this.isAnswerCorrect){
         setTimeout(()=>this.resetQuestion(),300);
@@ -228,30 +235,42 @@ export default defineComponent({
     }, //end  startTimer()
 
     checkAnswer(userAnswer, operation, operands){
-      if(isNaN(userAnswer))
-        return false;
+      console.log("#### checkAnswer() called!!!");
 
-      const num1 = operands.num1;
-      const num2 = operands.num2;
+      if(isNaN(userAnswer)) {
+        console.log("#### userAnswer is NaN!!!");
+        return false;
+      }
+
+      const userNum = parseInt(userAnswer);
+      console.log("#### userNum = " + userNum);
+      console.log("#### userNum DATA TYPE = " + typeof userNum);
+
+      const num1 = Number(operands.num1);
+      const num2 = Number(operands.num2);
       let correctAnswer = 0;
       switch(operation){
         case "+":
           correctAnswer = num1 + num2;
+          console.log("#### correctAnswer = " + correctAnswer);
           break;
         case "-":
           correctAnswer = num1 - num2;
+          console.log("#### correctAnswer = " + correctAnswer);
           break;
         case "x":
           correctAnswer = num1 * num2;
+          console.log("#### correctAnswer = " + correctAnswer);
           break;
         case "/":
           correctAnswer = num1 / num2;
+          console.log("#### correctAnswer = " + correctAnswer);
           break;
         default:
           console.log("Invalid user answer entered.");
           return false;
       }
-      return (parseInt(userAnswer) === correctAnswer);
+      return (userNum === correctAnswer);
     },
 
     clear() {
