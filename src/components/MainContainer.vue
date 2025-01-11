@@ -136,7 +136,7 @@ export default defineComponent({
   }, // end components
 
   data: () => {
-    // The data property always returns an obj filled with reactive variables.
+    // The data property is always a fcn which returns an obj filled with reactive variables.
     // Basically, all your lets go here.
     return {
       operationList: [
