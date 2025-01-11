@@ -137,7 +137,7 @@ export default defineComponent({
 
   data: () => {
     // The data property always returns an obj filled with reactive variables.
-    // Basically, all your let's go here.
+    // Basically, all your lets go here.
     return {
       operationList: [
         ['Addition', '+'],
