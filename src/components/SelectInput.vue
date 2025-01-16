@@ -1,11 +1,31 @@
 <template>
   <div class="row mx-1 my-3">
-    <label :id="labelId" :for="id" class="fw-bold">{{ label }}</label>
+    <label :id="labelId"
+           :for="id"
+           class="fw-bold">
+      {{ label }}
+    </label>
 
-    <!-- This `@input="emitInput"` is an event Emitter, for which the parent comp listens. -->
-    <select :id="id" class="col form-select" :value="modelValue" @input="emitInput">
-      <option :value="modelValue" disabled selected>{{ modelValue }}</option>
-      <option v-for="option in options" :key="`${id}-${option[1]}`" :value="option[1]">
+    <select :id="id"
+            class="col form-select"
+            alt="Please select one"
+            :value="modelValue"
+            @input="emitInput">
+      <!-- This `@input="emitInput"` is an event Emitter, for which the parent comp listens. -->
+
+      <!-- dflt / placeholder option -->
+      <option id=""
+              :value="modelValue"
+              disabled
+              selected>
+        {{ modelValue }}
+      </option>
+
+      <!-- v-for loop of options -->
+      <option id=""
+              v-for="option in options"
+              :key="`${id}-${option[1]}`"
+              :value="option[1]">
         {{ option[0] }}
       </option>
     </select>
