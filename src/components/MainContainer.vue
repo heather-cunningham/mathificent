@@ -22,6 +22,7 @@
 
     <div id="game-container" class="text-center" v-else-if="screen === 'play'">
 
+      <!-- "endgame-container" -->
       <transition name="slide">
         <!-- Time’s Up Game Play template-->
         <template v-if="timeLeft === 0">
@@ -56,6 +57,7 @@
         </template><!-- end Time's Up template -->
       </transition>
 
+      <!-- gameboard-container -->
       <transition name="slide-right">
         <!-- Game Template -->
         <template v-if="timeLeft > 0">
