@@ -5,14 +5,14 @@
 </template>
 
 <script>
-import {defineComponent} from 'vue'
+import {defineComponent} from 'vue';
 
 export default defineComponent({
   name: "GameTimer",
   props: {
     timeLeft: Number,
   },
-})
+});
 </script>
 
 <style scoped>
