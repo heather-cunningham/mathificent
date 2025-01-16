@@ -1,6 +1,7 @@
 <!--suppress CssUnusedSymbol -->
 <template>
   <main id="main-container">
+    <!-- "start game / config-container" -->
     <div id="config-container" v-if="screen === 'config'">
       <h1 id="mathificent-header">Mathificent!</h1>
       <SelectInput id="operation"
